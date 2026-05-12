@@ -9,6 +9,8 @@ const pickPlanFields = (body) => {
         "description",
         "interval",
         "isActive",
+        "stripePriceId",
+        "stripeProductId",
     ];
 
     return allowedFields.reduce((fields, field) => {
