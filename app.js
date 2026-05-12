@@ -10,7 +10,6 @@ import cors from "cors";
 const app = express();
 
 const corsOptions = {
-    // Reflect request origin so both local and hosted clients can access the API
     origin: true,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -18,7 +17,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+// app.options("*", cors(corsOptions));
 
 
 app.use(express.json());
