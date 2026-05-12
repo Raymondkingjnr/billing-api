@@ -5,8 +5,21 @@ import planRoute from "./routes/plan.route.js";
 import cookieParser from "cookie-parser";
 import connectMongoDB from "./config/db.js";
 import errorMiddleware from "./middleware/error.middleware.js";
+import cors from "cors";
 
 const app = express();
+
+const corsOptions = {
+    // Reflect request origin so both local and hosted clients can access the API
+    origin: true,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
