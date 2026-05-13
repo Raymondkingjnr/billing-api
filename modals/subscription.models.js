@@ -3,7 +3,6 @@ import "./plan.models.js";
 
 const subscriptionSchema = new mongoose.Schema({
     plan: {type: mongoose.Schema.Types.ObjectId, ref: "Plan", required: true,},
-
     user: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true,},
     stripeSubscriptionId: { type: String, required: true, unique: true },
     stripeCustomerId: { type: String, required: true },
@@ -13,10 +12,10 @@ const subscriptionSchema = new mongoose.Schema({
         enum: [
             'trialing',
             'active',
-            'past_due',     // payment failed but Stripe is retrying
+            'past_due',
             'canceled',
-            'unpaid',       // all retries exhausted
-            'incomplete',   // first payment not confirmed yet
+            'unpaid',
+            'incomplete',
             'incomplete_expired',
             'paused',
         ],
