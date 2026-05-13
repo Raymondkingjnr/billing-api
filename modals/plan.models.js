@@ -16,7 +16,6 @@ export const PlanSchema = new mongoose.Schema({
         default: true,
     },
     stripePriceId: { type: String, required: true },
-    stripeProductId: { type: String, required: true },
 }, {timestamps: true});
 
 const Plan = mongoose.model('Plan', PlanSchema);

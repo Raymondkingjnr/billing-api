@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const {PlanSchema} = require("./plan.models.js");
+import mongoose from 'mongoose';
 
 const invoiceSchema = new mongoose.Schema(
     {
