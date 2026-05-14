@@ -6,8 +6,11 @@ import Invoice from "../modals/invoice.models.js";
 export const subscriptionCheckout = async (req, res) => {
     try {
         const url = await getCheckoutUrl(req.user._id, req.params.planId);
-        res.json({ url });
-    } catch (error) {
+        return res.status(201).json({
+            success: true,
+            message: "subscription checkout url generated successfully",
+            data: {url},
+        });    } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
 };
