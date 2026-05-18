@@ -23,13 +23,6 @@ function resolvePeriod(stripeSub) {
   };
 }
 
-export function buildUserSubscriptionQuery(userId) {
-  return Subscription.findOne({ user: userId }).sort({
-    createdAt: -1,
-    currentPeriodEnd: -1,
-  });
-}
-
 async function saveInvoice(inv, subDoc) {
   try {
     await Invoice.create({
@@ -87,28 +80,18 @@ export async function cancelSubscription(userId, cancelImmediately = false) {
   const subscription = await Subscription.findOne({
     user: userId,
     status: { $in: ["active", "trialing"] },
-  }).sort({
-    createdAt: -1,
-    currentPeriodEnd: -1,
   });
   if (!subscription) throw new Error("No active subscription found");
 
   if (cancelImmediately) {
-    const canceledStripeSub = await stripe.subscriptions.cancel(
-      subscription.stripeSubscriptionId,
-    );
-    subscription.status = canceledStripeSub.status;
+    await stripe.subscriptions.cancel(subscription.stripeSubscriptionId);
+    subscription.status = "canceled";
     subscription.canceledAt = new Date();
-    subscription.cancelAtPeriodEnd = false;
   } else {
-    const updatedStripeSub = await stripe.subscriptions.update(
-      subscription.stripeSubscriptionId,
-      {
-        cancel_at_period_end: true,
-      },
-    );
-    subscription.status = updatedStripeSub.status;
-    subscription.cancelAtPeriodEnd = updatedStripeSub.cancel_at_period_end;
+    await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+      cancel_at_period_end: true,
+    });
+    subscription.cancelAtPeriodEnd = true;
   }
 
   await subscription.save();

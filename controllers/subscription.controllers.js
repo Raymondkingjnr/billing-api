@@ -1,8 +1,5 @@
-import {
-    buildUserSubscriptionQuery,
-    getCheckoutUrl,
-    cancelSubscription as cancelSub,
-} from "../service/stripe.service.js";
+import { getCheckoutUrl, cancelSubscription as cancelSub } from "../service/stripe.service.js";
+import Subscription from "../modals/subscription.models.js";
 import Invoice from "../modals/invoice.models.js";
 
 // GET /api/v1/subscription/checkout/:planId
@@ -40,7 +37,8 @@ export const cancelSubscription = async (req, res) => {
 // GET /api/v1/subscription/current-subscription
 export const getUserCurrentSubscription = async (req, res) => {
     try {
-        const sub = await buildUserSubscriptionQuery(req.user._id)
+        const sub = await Subscription.findOne({ user: req.user._id })
+            .sort({ createdAt: -1 })
             .populate('plan');
 
         return res.status(201).json({
