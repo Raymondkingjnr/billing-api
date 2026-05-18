@@ -13,7 +13,7 @@ const getCookieOptions = (maxAge) => ({
   ...(maxAge ? { maxAge } : {}),
 });
 
-const accessTokenCookieMaxAge = 15 * 60 * 1000;
+const accessTokenCookieMaxAge = 24 * 60 * 60 * 1000;
 
 const formatUser = (user) => ({
   id: user._id,
